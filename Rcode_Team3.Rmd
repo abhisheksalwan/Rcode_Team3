@@ -1,0 +1,118 @@
+---
+title: "Assignment 1 - R by Team 3"
+output: pdf_document
+date: "2022-08-03"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages}
+library("ggplot2")
+library("magrittr")
+library("dplyr")
+```
+
+
+```{r mtcars}
+
+# Github link : 
+
+#1 Print the structure of your dataset
+str(mtcars)
+
+#2 List the variables in your dataset
+names(mtcars)
+
+#3 Print the top 15 rows of your dataset
+head(mtcars,n=15)
+
+#4 Write a user defined function using any of the variables from the data set
+mpg_to_kmpl <-function(x){
+  x*0.425143707
+}
+mpg_to_kmpl(mtcars$mpg)
+
+#5 Use data manipulation techniques and filter rows based on any logical criteria that exist in your dataset
+mtcars %>% filter(gear>3)
+
+#6 Identify the dependent & independent variables and use reshaping techniques and create a new data frame by joining those variables from your dataset
+independentVar = mtcars$mpg
+dependentVar = as.data.frame(mtcars %>% select(2:6))
+newdf = as.data.frame(cbind(independentVar,dependentVar))
+names(newdf)[1]="mpg" 
+newdf
+
+#7 Remove missing values in your dataset
+## adding new row named "newCar" in end with missing value for mpg column 
+newRow1 <- data.frame(0,2,3,4,5,6,7,8,9,10,11, row.names = "newCar")
+newRow1[newRow1 == 0] <- NA
+names(newRow1) <- names(mtcars)
+newmtCars <-rbind(mtcars, newRow1)
+newmtCars
+## eliminating missing values
+newmtCars %>% filter(!is.na(mpg))
+
+#8 Identify and remove duplicated data in your dataset
+mtcars1 = rbind(mtcars,mtcars)
+mtcars1
+##
+mtcars_uniq <- mtcars1[!duplicated(mtcars1),]
+mtcars_uniq
+
+#9 Reorder multiple rows in descending order
+mtcars %>% arrange(desc(gear),desc(carb), desc(hp))
+
+#10 Rename some of the column names in your dataset
+mtcars %>% rename(hpwr = hp, Rear_axle_ratio = drat, fwd_gear = gear)
+
+#11 Add new variables in your data frame by using a mathematical function 
+mtcars %>% mutate(hp_by_cyl = hp/cyl)
+
+#12 Create a training set using random number generator engine.
+set.seed(1234)
+training_set <- mtcars %>% sample_frac(0.8, replace = FALSE)
+training_set
+
+#13 Print the summary statistics of your dataset
+summary(mtcars)
+
+#14 Use any of the numerical variables from the dataset and perform the following statistical functions:
+#Mean
+mean(mtcars$mpg)
+
+#Median
+median(mtcars$disp)
+
+#Mode
+find_mode <- function(x) {
+  u <- unique(x)
+  tab <- tabulate(match(x, u))
+  u[tab == max(tab)]
+}
+find_mode(mtcars$carb)
+
+#Range
+range(mtcars$gear)
+
+#15 Plot a scatter plot for any 2 variables in your dataset
+ggplot(mtcars , aes(x=mpg , y=wt)) + 
+geom_point(size=1.3, color ="steelblue", shape=19)
+
+#16 Plot a bar plot for any 2 variables in your dataset
+ggplot(data = mtcars,aes (x = cyl))+geom_bar(fill = "steelblue")
+ggplot(data = mtcars,aes (x = gear))+geom_bar(fill = "steelblue")
+
+#17 Find the correlation between any 2 variables by applying least square linear regression model
+y = mtcars[,"mpg"] 
+x = mtcars[,"disp"] 
+head(x)
+head(y)
+xycorr <-cor(x,y, method = "pearson")
+xycorr
+plot(y~x, col = x)
+model1 = lm(y~x)
+abline(model1,col = "steelblue", lwd = 3)
+
+```
