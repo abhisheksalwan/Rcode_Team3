@@ -17,7 +17,6 @@ library("dplyr")
 
 ```{r mtcars}
 
-# Github link : 
 
 #1 Print the structure of your dataset
 str(mtcars)
@@ -50,14 +49,14 @@ newRow1 <- data.frame(0,2,3,4,5,6,7,8,9,10,11, row.names = "newCar")
 newRow1[newRow1 == 0] <- NA
 names(newRow1) <- names(mtcars)
 newmtCars <-rbind(mtcars, newRow1)
-newmtCars
 ## eliminating missing values
 newmtCars %>% filter(!is.na(mpg))
 
 #8 Identify and remove duplicated data in your dataset
+## creating new dataset mtcars1 with duplicate rows
 mtcars1 = rbind(mtcars,mtcars)
 mtcars1
-##
+## Removing duplicate rows from mtcars1
 mtcars_uniq <- mtcars1[!duplicated(mtcars1),]
 mtcars_uniq
 
@@ -114,5 +113,7 @@ xycorr
 plot(y~x, col = x)
 model1 = lm(y~x)
 abline(model1,col = "steelblue", lwd = 3)
+
+# Github link : https://github.com/abhisheksalwan/Rcode_Team3
 
 ```
